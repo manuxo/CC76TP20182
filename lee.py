@@ -1,21 +1,12 @@
-class CentroPoblado:
-    def __init__(self,nombre,coordX, coordY):
-        self.nombre = nombre
-        self.coordX = coordX
-        self.coordY = coordY
+from models.CentroPoblado import CentroPoblado
 
-    def __str__(self):
-        return "%s X: %f Y: %f" % (self.nombre,self.coordX,self.coordY)
-
-# Dictionary
-vertices = {}
 
 def imprimeCentrosPoblados(d):
     for key in d:
         print("%s : %s" % (key,d[key]))
 
-
 def leerDataSet(path):
+    vertices = {}
     file = open(path)
     i = 0
     for line in file:
@@ -31,7 +22,9 @@ def leerDataSet(path):
                 coordY = float(registro[16])
             except:
                 continue
-            vertices[codigoCP] = CentroPoblado(nombreCP,coordX,coordY)
+            vertices[codigoCP] = CentroPoblado(codigoCP,nombreCP,coordX,coordY)
+    return vertices
 
-leerDataSet("dataset.csv")
-imprimeCentrosPoblados(vertices)
+if __name__ == "__main__":
+    vertices = leerDataSet("dataset.csv")
+    imprimeCentrosPoblados(vertices)
