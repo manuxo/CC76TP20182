@@ -7,7 +7,7 @@ def guardarGrafo(grafo,nombreArchivo):
             linea += key
             for adyacente in grafo.aristas[key]:
                 linea+= ",%s" % adyacente
-            linea += "\n"
+            linea += '\n'
             archivo.write(linea)
 
         archivo2 = open("pesos."+nombreArchivo,'w')
