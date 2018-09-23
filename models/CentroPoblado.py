@@ -6,4 +6,4 @@ class CentroPoblado:
         self.coordY = coordY
 
     def __str__(self):
-        return "%s X: %f Y: %f" % (self.nombre,self.coordX,self.coordY)
+        return "%s Cod: %s  X: %f Y: %f" % (self.nombre, self.codigo,self.coordX,self.coordY)
