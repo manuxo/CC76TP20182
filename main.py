@@ -35,8 +35,8 @@ def generarCaminos(diccionario,grafo):
         y1 = []
         if costo and camino:
             for codigoCP in camino:
-                x1.append(d[codigoCP].coordX)
-                y1.append(d[codigoCP].coordY)
+                x1.append(diccionario[codigoCP].coordX)
+                y1.append(diccionario[codigoCP].coordY)
             plt.text(x1[0], y1[0], str(round(costo,2)), family="sans-serif", color=colores[i])
             plt.plot(x1,y1,colores[i],marker="8",markerEdgeColor="black")
         else:

@@ -31,7 +31,6 @@ def generarGrafo(centrosPoblados):
         c+=1
     return grafo
 
-
 if __name__ == "__main__":
     #grafo = generarGrafo(leerDataSet("dataset.csv"))
     grafo = leeLA("grafo")
