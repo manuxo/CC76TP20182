@@ -19,7 +19,7 @@ def ucs(grafo,inicio, meta):
                 if vecino not in visitados:
                     visitados.add(vecino)
                     cola.put((costo_total,vecino,camino_total))
-
+    return (None,None)
 
 if __name__ == "__main__":
     grafo = leeLA("grafo")

@@ -30,18 +30,29 @@ def leeLA(nombreArchivo): #retorna un grafo
     try:
         archivoAristas = open(nombreArchivo,'r')
         lineas = archivoAristas.readlines()
+        n = len(lineas)
+        c = 0
         for linea in lineas:
             linea = linea.replace('\n','')
             codigos = linea.split(',')
             nodo = codigos.pop(0)
             vecinos = codigos
             grafo.aristas[nodo] = vecinos
+            p = (c/float(n)) * 100
+            print("Leyendo aristas (" + str(round(p,2)) + "%)")
+            c+=1
         archivoPesos = open("pesos."+nombreArchivo)
-        for linea in archivoPesos:
+        lineas = archivoPesos.readlines()
+        n = len(lineas)
+        c = 0
+        for linea in lineas:
             valores = linea.split(',')
             arista = valores[0]
             peso = float(valores[1])
             grafo.pesos[arista] = peso
+            p = (c/float(n)) * 100
+            print("Leyendo pesos (" + str(round(p,2)) + "%)")
+            c+=1
     except FileNotFoundError:
         print("Archivo no encontrado, el formato es: 'pesos.nombreArchivo' y 'nombreArchivo")
     finally:

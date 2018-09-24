@@ -10,14 +10,14 @@ def distancia(x1,y1,x2,y2):
 def generarGrafo(centrosPoblados):
     grafo = Grafo()
     listaDeKeys = list(centrosPoblados)
+    n = len(centrosPoblados)
+    c = 0
     for key in centrosPoblados:
         codigoCP = centrosPoblados[key].codigo
         nVecinos = randint(0,10)
         vecinos = [None] * nVecinos
         for i in range(nVecinos):
-            keys = listaDeKeys.copy()
-            keys.remove(key)
-            keyAleatorio = choice(keys)
+            keyAleatorio = choice(listaDeKeys)
             vecinos[i] = centrosPoblados[keyAleatorio].codigo
             x1 = centrosPoblados[key].coordX
             x2 = centrosPoblados[keyAleatorio].coordX
@@ -26,6 +26,9 @@ def generarGrafo(centrosPoblados):
             peso = distancia(x1,x2,y1,y2)
             grafo.pesos[(key+keyAleatorio)] = peso
         grafo.aristas[codigoCP] = vecinos
+        p = (c/float(n)) * 100
+        print("Generando grafo(" + str(round(p,2)) + '%)')
+        c+=1
     return grafo
 
 
