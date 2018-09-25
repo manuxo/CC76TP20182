@@ -16,7 +16,7 @@ def sub_dict(somedict, somekeys, default=None):
     return dict([ (k, somedict.get(k, default)) for k in somekeys ])
 llaves = list(d)
 llavesSub = set()
-nCiudades = randint(2,75)
+nCiudades = randint(2,25)
 for i in range(nCiudades):
     k = choice(llaves)
     llavesSub.add(k)
@@ -32,23 +32,32 @@ plt.plot(x,y,'ro')
 #Generando caminos con bfs
 def generarCaminos(diccionario,grafo):
     codigos = list(diccionario)
-    colores = ['b','c','m','y','w']
+    colores = ['r','b','c','m','y','w']
     print("Generando caminos con BFS")
     caminos = []
     solucion = [None]*2 # [inicio,final]
     buscarCaminos(grafo,codigos,solucion,0,caminos)
     for c in caminos:
-        x = []
-        y = []
+        n = len(c)
+        x = [0]*n
+        y = [0]*n
         colorC = colores[0]
+
+        encontrado = False
         #Valida si el camino recorre todos los nodos
         #Lo pinta de otro color
         if collections.Counter(c) == collections.Counter(codigos):
-            colorC = colores[2]
+            colorC = colores[1]
+            encontrado = True
+        j = 0
         for codigoCP in c:
-            x.append(diccionario[codigoCP].coordX)
-            y.append(diccionario[codigoCP].coordY)
+            x[j] = diccionario[codigoCP].coordX
+            y[j] = diccionario[codigoCP].coordY
+            plt.text(x[j], y[j], diccionario[codigoCP].nombre, family="sans-serif", color=colores[2])
+            j+=1
         plt.plot(x,y,color=colorC,marker="8",markerEdgeColor="black")
+        if encontrado:
+            break
 #Backtracking
 #solucion = [inicio,fin]
 def buscarCaminos(grafo,codigos,solucion,etapa,caminos):
@@ -75,6 +84,5 @@ generarCaminos(subD,grafo)
 
 a = ['a','c','b']
 b = ['b','a','c']
-
 
 plt.show()

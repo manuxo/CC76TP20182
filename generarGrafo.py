@@ -18,7 +18,7 @@ def generarGrafo(centrosPoblados):
         vecinos = [None] * nVecinos
         for i in range(nVecinos):
             keyAleatorio = choice(listaDeKeys)
-            vecinos[i] = centrosPoblados[keyAleatorio].codigo
+            vecinos[i] = keyAleatorio
             x1 = centrosPoblados[key].coordX
             x2 = centrosPoblados[keyAleatorio].coordX
             y1 = centrosPoblados[key].coordY

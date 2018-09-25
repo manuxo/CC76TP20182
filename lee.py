@@ -1,3 +1,4 @@
+from os import system
 from models.CentroPoblado import CentroPoblado
 from models.Grafo import Grafo
 def leerDataSet(nombreArchivo): #retorna un diccionario de los centros poblados
