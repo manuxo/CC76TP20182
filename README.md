@@ -94,7 +94,9 @@ Análisis de tiempo para los algoritmos de búsqueda por anchura (BFS):
 
 Donde:
 V: Número de vértices en la cola
+
 E: Número de aristas incidentes en cada vértice
+
 Esto es de acuerdo a la estructura del grafo, en este caso se utilizará una lista de adyacencia (n + m). En una matriz de adyacencia sería n^2
 
 ## Estrategia 1: UCS
