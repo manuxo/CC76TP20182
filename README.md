@@ -85,14 +85,162 @@ Este algoritmo de búsqueda trabaja con grafos ponderados o con pesos. En este t
 ```
 ![](https://algorithmicthoughts.files.wordpress.com/2012/12/searchtree.png?w=348&h=364)
 Fuente: [Artificial Intelligence – Uniform Cost Search (UCS)](https://algorithmicthoughts.wordpress.com/2012/12/15/artificial-intelligence-uniform-cost-searchucs/)
+
+## Análisis de la complejidad algorítmica
+
+Análisis de tiempo para los algoritmos de búsqueda por anchura (BFS):
+
+	O(V+E)
+
+Donde:
+V: Número de vértices en la cola
+E: Número de aristas incidentes en cada vértice
+Esto es de acuerdo a la estructura del grafo, en este caso se utilizará una lista de adyacencia (n + m). En una matriz de adyacencia sería n^2
+
+## Estrategia 1: UCS
+Con esta estrategia buscamos encontrar los caminos más cortos desde un punto aleatorio del mapa. El camino (path) debe terminar en el mismo punto de partida para considerarlo como posible solución. 
+
+``` python
+def ucs(grafo,inicio, meta):
+	visitados = set()
+	cola = PriorityQueue()
+	cola.put((0,inicio,[inicio]))
+	while cola:
+		costo,nodo,camino = cola.get()
+		if nodo not in visitados:
+			visitados.add(nodo)
+		for vecino in grafo.vecinos(nodo):
+			costo_total = costo + grafo.getPeso(nodo,vecino)
+			camino_total = camino + [vecino]
+			if vecino == meta:
+				return (costo_total,camino_total)
+			else:
+				if vecino not in visitados:
+					visitados.add(vecino)
+					cola.put((costo_total,vecino,camino_total))
+	return (None,None)
+```
+```python
+def generarCaminos(diccionario,grafo):
+	n = len(diccionario)
+	codigos = list(diccionario)
+	colores = ['b','c','m','y','w']
+	print("Generando caminos con UCS")
+	for i in range(4):
+		indiceCP = randint(0,n-1)
+		codigo = codigos[indiceCP]
+		costo,camino = ucs(grafo,codigo,codigo) #inicia y termina en la misma ciudad (codigo inicio y fin)
+		nCoord = len(camino)
+		x1 = [0]*nCoord
+		y1 = [0]*nCoord
+		if costo and camino:
+			j = 0
+			for codigoCP in camino:
+				x1[j] = diccionario[codigoCP].coordX
+				y1[j] = diccionario[codigoCP].coordY
+				nombreCP = diccionario[codigoCP].nombre
+				plt.text(x1[j], y1[j], nombreCP, family="sans-serif", color=colores[i])
+				j+=1
+				plt.text(x1[0], y1[0] + 0.5, str(round(costo,2)), family="sans-serif", color=colores[i])
+				plt.plot(x1,y1,color=colores[i],marker="8",markerEdgeColor="black")
+		else:
+			continue
+generarCaminos(d,grafo)
+plt.show()
+```
+Obtenemos como resultado los siguientes caminos:
+![Estrategia 1](https://preview.ibb.co/hBk8rp/estrategia.png)
+
+## Estrategia 2: BFS
+Usamos BFS para una muestra pequeña de todos los centros poblados. El objetivo será buscar todos los caminos posibles con combinatoria de 2 sobre n, es decir tomamos dos puntos cualquiera del grafo para generar caminos. Para ello utilizaremos backtracking. Si el camino recorre todos los nodos entonces cumple con una de las condiciones del problema TSP.
+
+```python
+def bfs(grafo,inicio,meta):
+	cola = [(inicio,[inicio])]
+	visitados = set()
+	while len(cola) > 0:
+		nodo,camino = cola.pop(0)
+		if nodo not in visitados:
+			visitados.add(nodo)
+		for vecino in grafo.vecinos(nodo):
+			if vecino == meta:
+				return camino + [vecino]
+			else:
+				if vecino not in visitados:
+					visitados.add(vecino)
+					cola.append((vecino,camino+[vecino]))
+	return None
+```
+Backtracking:
+```python
+#solucion = [inicio,fin]
+def buscarCaminos(grafo,codigos,solucion,etapa,caminos):
+	n = len(solucion)
+	numCentrosPoblados = len(codigos)
+	if etapa > n: #No hay solución
+		return
+	i = 0
+	while True:
+		solucion[etapa] = codigos[i]
+		if etapa == n-1:
+			camino = bfs(grafo,solucion[0],solucion[1])
+			#Validar si ha recorrido todos los nodos del grafo (codigos)
+			if camino:
+				caminos.append(camino)
+		else:
+			buscarCaminos(grafo,codigos,solucion,etapa+1,caminos)
+		i+=1
+		if i == numCentrosPoblados:
+			break
+```
+Validamos si el camino recorre todos los nodos:
+```python
+def generarCaminos(diccionario,grafo):
+	codigos = list(diccionario)
+	colores = ['r','b','c','m','y','w']
+	print("Generando caminos con BFS")
+	caminos = []
+	solucion = [None]*2 # [inicio,final]
+	buscarCaminos(grafo,codigos,solucion,0,caminos)
+	for c in caminos:
+		n = len(c)
+		x = [0]*n
+		y = [0]*n
+		colorC = colores[0]
+		encontrado = False
+		#Valida si el camino recorre todos los nodos
+		#Lo pinta de otro color
+		if collections.Counter(c) == collections.Counter(codigos):
+			colorC = colores[1]
+			encontrado = True
+	j = 0
+	for codigoCP in c:
+		x[j] = diccionario[codigoCP].coordX
+		y[j] = diccionario[codigoCP].coordY
+		plt.text(x[j], y[j], diccionario[codigoCP].nombre, family="sans-serif", color=colores[2])
+		j+=1
+	plt.plot(x,y,color=colorC,marker="8",markerEdgeColor="black")
+	if encontrado:
+		break
+```
+Resultado:
+![enter image description here](https://image.ibb.co/hPZq49/bfs.png)
+
+## Conclusiones
+
+ - Se ha resuelto por partes el problema dado. Mediante la primera estrategia se ha logrado encontrar el camino más corto que retorne al punto de partida, mientras que con la segunda estrategia se pudo comprobar los caminos que recorren todos los centros poblados tomando una pequeña muestra.
+ - Si se integran ambas estrategias podría obtener una solución para un problema con pocos elementos y es fácil de comprobar; sin embargo, debido a la gran cantidad de datos a procesar los algoritmos propuestos pueden ser ineficientes.
+
 ## Bibliografía
 
-Jiménez, A. (2006, agosto 26). _P versus NP. ¿Nunca lo entendiste?_ Retrieved from Xataka Ciencia: https://www.xatakaciencia.com/matematicas/p-versus-np-nunca-lo-entendiste
+Jiménez, A. (2006, agosto 26). _P versus NP. ¿Nunca lo entendiste?_ Obtenido de Xataka Ciencia: https://www.xatakaciencia.com/matematicas/p-versus-np-nunca-lo-entendiste
 
 Pavlus, J. (19 de agosto de 2010). _¿Qué significa 'P vs NP' para el resto de nosotros?_ Obtenido de MIT Technology review: https://www.technologyreview.es/s/1374/que-significa-p-vs-np-para-el-resto-de-nosotros
 
-http://cyluun.github.io/blog/uninformed-search-algorithms-in-python
+Vasiliu, A. (25 de setiembre de 2018). _Uninformed search algorithms in Python_. Obtenido de http://cyluun.github.io/blog/uninformed-search-algorithms-in-python
 
-https://www.hackerearth.com/practice/algorithms/graphs/breadth-first-search/tutorial/
+Garg, P. (25 de setiembre de 2018). _Breadth First Search_. Obtenido de https://www.hackerearth.com/practice/algorithms/graphs/breadth-first-search/tutorial/
 
-https://algorithmicthoughts.wordpress.com/2012/12/15/artificial-intelligence-uniform-cost-searchucs/
+Agrawal, S. (2012 de diciembre de 2012). _Artificial Intelligence – Uniform Cost Search(UCS)_. Obtenido de https://algorithmicthoughts.wordpress.com/2012/12/15/artificial-intelligence-uniform-cost-searchucs/
+
+Ultrablendz. (07 de agosto de 2017). _¿Por qué es la complejidad de tiempo de ambos DFS y BFS O (V + E)_. Obtenido de https://stackoverrun.com/es/q/3057118
