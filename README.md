@@ -3,6 +3,10 @@ Trabajo parcial para el curso de Complejidad Algorítmica. UPC - Universidad Per
 
 ![](https://media.giphy.com/media/VD9NtdBN9CwqQ/giphy.gif)
 
+#### Integrantes:
+ * Manuel Alvarado Estanga
+ * Luis Angel Bernal
+
 ## Introducción
 A lo largo de la existencia de las computadoras, se ha considerado a estas como herramientas de las cuales nos podemos valer para facilitar nuestras actividades. Así, se ha pensado que las computadoras nos pueden ayudar a resolver todos nuestros problemas y que poseen más poder para procesar datos que nosotros. Es raro pensar en que las computadoras poseen limites en sus facultades de cálculo, ya que muy pocas veces nos encontramos ante tales limites; de hecho, probablemente el usuario promedio no tenga que lidiar nunca en su vida con ningún problema que requiera llevar el poder de procesamiento de la computadora hasta casi el límite. Pese a esto, hasta el día de hoy existen ciertos problemas que no han podido ser resueltos ni con la ayuda de las computadoras, esto se debe a que quizás si se pueda encontrar una respuesta, pero el tiempo que le llevaría a las computadoras darnos el resultado podría ser de hasta millones de años.
 
